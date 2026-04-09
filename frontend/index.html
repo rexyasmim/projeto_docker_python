@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Corporativo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3498db; color: white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Relatório Gerencial 📊</h1>
+    
+    <h2>Clientes</h2>
+    <table id="tabela-clientes">
+        <thead><tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Telefone</th></tr></thead>
+        <tbody id="corpo-clientes"></tbody>
+    </table>
+
+    <h2>Funcionários</h2>
+    <table id="tabela-funcionarios">
+        <thead><tr><th>ID</th><th>Nome</th><th>Cargo</th><th>Departamento</th></tr></thead>
+        <tbody id="corpo-funcionarios"></tbody>
+    </table>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:8000/api';
+
+    async function carregarDados() {
+        // Busca Clientes
+        const resClientes = await fetch(`${API_URL}/clientes`);
+        const clientes = await resClientes.json();
+        const tbodyClientes = document.getElementById('corpo-clientes');
+        clientes.forEach(c => {
+            tbodyClientes.innerHTML += `<tr><td>${c.id}</td><td>${c.nome}</td><td>${c.email}</td><td>${c.telefone}</td></tr>`;
+        });
+
+        // Busca Funcionários
+        const resFuncionarios = await fetch(`${API_URL}/funcionarios`);
+        const funcionarios = await resFuncionarios.json();
+        const tbodyFuncionarios = document.getElementById('corpo-funcionarios');
+        funcionarios.forEach(f => {
+            tbodyFuncionarios.innerHTML += `<tr><td>${f.id}</td><td>${f.nome}</td><td>${f.cargo}</td><td>${f.departamento}</td></tr>`;
+        });
+    }
+
+    window.onload = carregarDados;
+</script>
+</body>
+</html>
